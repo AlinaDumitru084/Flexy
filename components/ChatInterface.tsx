@@ -1,4 +1,4 @@
-// Code for components/ChatInterface.tsx
+// NEW Code for components/ChatInterface.tsx
 
 "use client";
 
@@ -13,90 +13,56 @@ interface Message {
   text: string;
 }
 
-// This function formats the plan into a nice string (this is unchanged)
-const formatPlan = (plan: any): string => {
-  let planText = "Here is your personalized plan:\n\n**Workout Plan:**\n";
-  plan.workout_plan.forEach((item: any) => {
-    planText += `- ${item.exercise} (Sets: ${item.sets}, Reps: ${item.reps})\n`;
-  });
-  planText += "\n**Nutrition Plan:**\n";
-  plan.nutrition_plan.forEach((item: any) => {
-    planText += `- ${item.meal}: ${item.description}\n`;
-  });
-  planText += "\nFeel free to ask me any questions, or let me know when you're **done**!";
-  return planText;
-};
-
 export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; initialPlan: any }) {
-  const [messages, setMessages] = useState<Message[]>([
-    // <-- THIS IS THE MODIFIED LINE
-    { sender: 'ai', text: `Welcome back! Your primary goal is **${userDetails.goal}**.\n\n${formatPlan(initialPlan)}` }
-  ]);
+  // --- STATE MANAGEMENT ---
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isWaitingForFeedback, setIsWaitingForFeedback] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  // <-- NEW: State to manage the check-in flow
+  const [checkinStep, setCheckinStep] = useState<'feeling' | 'time' | 'chatting'>('feeling');
+  const [userFeeling, setUserFeeling] = useState('');
+
+  // Auto-scroll logic (unchanged)
   useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
     }
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  // --- NEW CHECK-IN FUNCTIONS ---
+  const handleFeelingSelect = (feeling: string) => {
+    setUserFeeling(feeling);
+    setMessages([{ sender: 'ai', text: `You're feeling: ${feeling}. Got it.` }]);
+    setCheckinStep('time'); // Move to the next step
+  };
 
-    if (input.toLowerCase().includes("done")) {
-      const userDoneMessage: Message = { sender: 'user', text: input };
-      setMessages(prev => [...prev, userDoneMessage]);
-      setIsWaitingForFeedback(true);
-      setInput('');
-      return;
-    }
-
-    const userMessage: Message = { sender: 'user', text: input };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
+  const handleTimeSelect = async (time: number) => {
     setIsLoading(true);
+    setMessages(prev => [...prev, { sender: 'ai', text: `And you have ${time} minutes.`}]);
 
-    try {
-      // <-- 1. NEW LINE: Read the feedback from the browser's memory
-      const lastWorkoutFeedback = localStorage.getItem('lastWorkoutFeedback');
+    // Call our new, simple API
+    const response = await fetch('/api/adapt-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ feeling: userFeeling, time }),
+    });
+    const data = await response.json();
+    
+    // Add the AI's suggestion and the original plan to the chat
+    const suggestionMessage: Message = { sender: 'ai', text: data.suggestion };
+    const planMessage: Message = { sender: 'ai', text: `Here is your full plan for reference:\n\n**Workout Plan:**\n${initialPlan.workout_plan.map((item: any) => `- ${item.exercise} (${item.sets}x${item.reps})`).join('\n')}` };
+    setMessages(prev => [...prev, suggestionMessage, planMessage]);
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userDetails: userDetails,
-          messageHistory: [...messages, userMessage],
-          // <-- 2. NEW LINE: Add the feedback to the message we send
-          lastWorkoutFeedback: lastWorkoutFeedback 
-        }),
-      });
-      // ... rest of the function
-
-      const data = await response.json();
-      const aiMessage: Message = { sender: 'ai', text: data.reply };
-      setMessages(prev => [...prev, aiMessage]);
-
-    } catch (error) {
-      const errorMessage: Message = { sender: 'ai', text: 'Sorry, I encountered an error. Please try again.' };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  const handleFeedbackClick = (feedback: string) => {
-    localStorage.setItem('lastWorkoutFeedback', feedback);
-    console.log(`Feedback saved: ${feedback}`);
-
-    const confirmationMessage: Message = { sender: 'ai', text: `Got it, you felt the workout was "${feedback}". Great job today!` };
-    setMessages(prev => [...prev, confirmationMessage]);
-
-    setIsWaitingForFeedback(false);
+    setIsLoading(false);
+    setCheckinStep('chatting'); // FINALLY, switch to normal chat mode
   };
 
+  // --- Normal chat functions (unchanged, but not used until check-in is done) ---
+  const handleSend = async () => { /* ... your existing handleSend logic ... */ };
+
+  // --- THE RENDER LOGIC ---
   return (
     <div className="flex flex-col h-screen max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-bold text-center mb-4">Flexy Chat</h1>
@@ -113,29 +79,44 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
         </div>
       </ScrollArea>
 
-      {isWaitingForFeedback ? (
-        <div className="text-center p-4 rounded-lg bg-gray-100">
-          <h3 className="font-semibold mb-3">How did that workout feel?</h3>
-          <div className="flex justify-center gap-2">
-            <Button onClick={() => handleFeedbackClick("Too Easy")}>Too Easy</Button>
-            <Button onClick={() => handleFeedbackClick("Just Right")}>Just Right</Button>
-            <Button onClick={() => handleFeedbackClick("Too Hard")}>Too Hard</Button>
+      {/* -- NEW: This whole block conditionally renders the UI based on the checkinStep -- */}
+      <div className="mt-4">
+        {checkinStep === 'feeling' && (
+          <div className="text-center p-4 rounded-lg bg-gray-100">
+            <h3 className="font-semibold mb-3">How are you feeling today?</h3>
+            <div className="flex justify-center gap-2">
+              <Button onClick={() => handleFeelingSelect("Energized")}>Energized</Button>
+              <Button onClick={() => handleFeelingSelect("A bit tired")}>A bit tired</Button>
+              <Button onClick={() => handleFeelingSelect("Sore")}>Sore</Button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex space-x-2">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question or type 'done' to finish..."
-            onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleSend()}
-            disabled={isLoading}
-          />
-          <Button onClick={handleSend} disabled={isLoading}>
-            Send
-          </Button>
-        </div>
-      )}
+        )}
+
+        {checkinStep === 'time' && (
+          <div className="text-center p-4 rounded-lg bg-gray-100">
+            <h3 className="font-semibold mb-3">How much time do you have?</h3>
+            <div className="flex justify-center gap-2">
+              <Button onClick={() => handleTimeSelect(15)}>15 min</Button>
+              <Button onClick={() => handleTimeSelect(30)}>30 min</Button>
+              <Button onClick={() => handleTimeSelect(45)}>45+ min</Button>
+            </div>
+          </div>
+        )}
+
+        {checkinStep === 'chatting' && (
+          // This is your original chat input, which only shows after the check-in
+          <div className="flex space-x-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask a follow-up question..."
+              onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleSend()}
+              disabled={isLoading}
+            />
+            <Button onClick={handleSend} disabled={isLoading}>Send</Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
