@@ -60,14 +60,20 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
     setIsLoading(true);
 
     try {
+      // <-- 1. NEW LINE: Read the feedback from the browser's memory
+      const lastWorkoutFeedback = localStorage.getItem('lastWorkoutFeedback');
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userDetails: userDetails,
-          messageHistory: [...messages, userMessage]
+          messageHistory: [...messages, userMessage],
+          // <-- 2. NEW LINE: Add the feedback to the message we send
+          lastWorkoutFeedback: lastWorkoutFeedback 
         }),
       });
+      // ... rest of the function
 
       const data = await response.json();
       const aiMessage: Message = { sender: 'ai', text: data.reply };
