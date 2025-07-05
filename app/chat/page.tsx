@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { ChatInterface } from "@/components/ChatInterface";
 
+
 export default function ChatPage() {
   const [initialData, setInitialData] = useState<{ userDetails: any; plan: any } | null>(null);
   const [isLoading, setIsLoading] = useState(true);

@@ -13,7 +13,7 @@ interface Message {
   text: string;
 }
 
-// This function formats the plan into a nice string
+// This function formats the plan into a nice string (this is unchanged)
 const formatPlan = (plan: any): string => {
   let planText = "Here is your personalized plan:\n\n**Workout Plan:**\n";
   plan.workout_plan.forEach((item: any) => {
@@ -23,7 +23,7 @@ const formatPlan = (plan: any): string => {
   plan.nutrition_plan.forEach((item: any) => {
     planText += `- ${item.meal}: ${item.description}\n`;
   });
-  planText += "\nFeel free to ask me any questions or for modifications!";
+  planText += "\nFeel free to ask me any questions, or let me know when you're **done**!"; // <-- Slightly updated text to teach the user
   return planText;
 };
 
@@ -33,10 +33,10 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isWaitingForFeedback, setIsWaitingForFeedback] = useState(false); // <-- NEW: Add a new "memory"
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Auto-scroll to the bottom when a new message appears
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
     }
@@ -44,6 +44,15 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
 
   const handleSend = async () => {
     if (!input.trim()) return;
+
+    // <-- NEW: Check for the magic word "done" before doing anything else
+    if (input.toLowerCase().includes("done")) {
+      const userDoneMessage: Message = { sender: 'user', text: input };
+      setMessages(prev => [...prev, userDoneMessage]); // Show the user's "done" message
+      setIsWaitingForFeedback(true); // Switch to feedback mode
+      setInput(''); // Clear the input box
+      return; // IMPORTANT: Stop here and don't send to the AI
+    }
 
     const userMessage: Message = { sender: 'user', text: input };
     setMessages(prev => [...prev, userMessage]);
@@ -54,9 +63,9 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           userDetails: userDetails,
-          messageHistory: [...messages, userMessage] 
+          messageHistory: [...messages, userMessage]
         }),
       });
 
@@ -70,6 +79,20 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
     } finally {
       setIsLoading(false);
     }
+  };
+  
+  // <-- NEW: A function to handle when a user clicks a feedback button
+  const handleFeedbackClick = (feedback: string) => {
+    // Save the feedback to the browser's memory for later
+    localStorage.setItem('lastWorkoutFeedback', feedback);
+    console.log(`Feedback saved: ${feedback}`);
+
+    // Add a nice confirmation message to the chat
+    const confirmationMessage: Message = { sender: 'ai', text: `Got it, you felt the workout was "${feedback}". Great job today!` };
+    setMessages(prev => [...prev, confirmationMessage]);
+
+    // Switch back to the normal chat input
+    setIsWaitingForFeedback(false);
   };
 
   return (
@@ -87,18 +110,31 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
           {isLoading && <div className="text-gray-500">Flexy is thinking...</div>}
         </div>
       </ScrollArea>
-      <div className="flex space-x-2">
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask a follow-up question..."
-          onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleSend()}
-          disabled={isLoading}
-        />
-        <Button onClick={handleSend} disabled={isLoading}>
-          Send
-        </Button>
-      </div>
+
+      {/* <-- NEW: Show either the feedback buttons or the normal chat input --> */}
+      {isWaitingForFeedback ? (
+        <div className="text-center p-4 rounded-lg bg-gray-100">
+          <h3 className="font-semibold mb-3">How did that workout feel?</h3>
+          <div className="flex justify-center gap-2">
+            <Button onClick={() => handleFeedbackClick("Too Easy")}>Too Easy</Button>
+            <Button onClick={() => handleFeedbackClick("Just Right")}>Just Right</Button>
+            <Button onClick={() => handleFeedbackClick("Too Hard")}>Too Hard</Button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex space-x-2">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask a question or type 'done' to finish..."
+            onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleSend()}
+            disabled={isLoading}
+          />
+          <Button onClick={handleSend} disabled={isLoading}>
+            Send
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
