@@ -23,17 +23,18 @@ const formatPlan = (plan: any): string => {
   plan.nutrition_plan.forEach((item: any) => {
     planText += `- ${item.meal}: ${item.description}\n`;
   });
-  planText += "\nFeel free to ask me any questions, or let me know when you're **done**!"; // <-- Slightly updated text to teach the user
+  planText += "\nFeel free to ask me any questions, or let me know when you're **done**!";
   return planText;
 };
 
 export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; initialPlan: any }) {
   const [messages, setMessages] = useState<Message[]>([
-    { sender: 'ai', text: `Hello! I've analyzed your details. ${formatPlan(initialPlan)}` }
+    // <-- THIS IS THE MODIFIED LINE
+    { sender: 'ai', text: `Welcome back! Your primary goal is **${userDetails.goal}**.\n\n${formatPlan(initialPlan)}` }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isWaitingForFeedback, setIsWaitingForFeedback] = useState(false); // <-- NEW: Add a new "memory"
+  const [isWaitingForFeedback, setIsWaitingForFeedback] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,13 +46,12 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    // <-- NEW: Check for the magic word "done" before doing anything else
     if (input.toLowerCase().includes("done")) {
       const userDoneMessage: Message = { sender: 'user', text: input };
-      setMessages(prev => [...prev, userDoneMessage]); // Show the user's "done" message
-      setIsWaitingForFeedback(true); // Switch to feedback mode
-      setInput(''); // Clear the input box
-      return; // IMPORTANT: Stop here and don't send to the AI
+      setMessages(prev => [...prev, userDoneMessage]);
+      setIsWaitingForFeedback(true);
+      setInput('');
+      return;
     }
 
     const userMessage: Message = { sender: 'user', text: input };
@@ -81,17 +81,13 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
     }
   };
   
-  // <-- NEW: A function to handle when a user clicks a feedback button
   const handleFeedbackClick = (feedback: string) => {
-    // Save the feedback to the browser's memory for later
     localStorage.setItem('lastWorkoutFeedback', feedback);
     console.log(`Feedback saved: ${feedback}`);
 
-    // Add a nice confirmation message to the chat
     const confirmationMessage: Message = { sender: 'ai', text: `Got it, you felt the workout was "${feedback}". Great job today!` };
     setMessages(prev => [...prev, confirmationMessage]);
 
-    // Switch back to the normal chat input
     setIsWaitingForFeedback(false);
   };
 
@@ -111,7 +107,6 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
         </div>
       </ScrollArea>
 
-      {/* <-- NEW: Show either the feedback buttons or the normal chat input --> */}
       {isWaitingForFeedback ? (
         <div className="text-center p-4 rounded-lg bg-gray-100">
           <h3 className="font-semibold mb-3">How did that workout feel?</h3>
