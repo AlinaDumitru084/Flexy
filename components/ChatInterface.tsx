@@ -130,7 +130,7 @@ export function ChatInterface({ userDetails, initialPlan }: { userDetails: any; 
               <div className="flex justify-center gap-2">
                 <Button onClick={() => handleFeelingSelect("Energized")}>Energized</Button>
                 <Button onClick={() => handleFeelingSelect("A bit tired")}>A bit tired</Button>
-                <Button onClick={() => handleFeelingSelect("Sore")}>Sore</Button>
+                <Button onClick={() => handleFeelingSelect("Achy")}>Achy</Button>
               </div>
             )}
 
