@@ -1,27 +1,16 @@
-// Correct code for app/page.tsx
+// PASTE THIS NEW CODE IN /app/page.tsx
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+// We need to import our new components, NOT the old ones
+import { Navbar } from '@/components/Navbar';
+import { HeroSection } from '@/components/HeroSection';
 
-export default function WelcomePage() {
+export default function LandingPage() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen text-center p-8">
-      <div className="mb-8">
-        <h1 className="text-7xl font-extrabold tracking-tighter text-gray-900">
-          Flexy
-        </h1>
-        <p className="text-xl text-muted-foreground mt-2">
-          Flex your limits.
-        </p>
-      </div>
-      <p className="max-w-md mb-8 text-lg text-gray-700">
-        Welcome! I'm your personal AI fitness and nutrition coach. Let's work together to achieve your goals.
-      </p>
-      <Link href="/details">
-        <Button size="lg" className="text-lg">
-          Let's have a conversation
-        </Button>
-      </Link>
+    // We give the whole page a black background and white text
+    <main className="bg-background text-foreground min-h-screen">
+      <Navbar />
+      <HeroSection />
+    
     </main>
   );
 }
