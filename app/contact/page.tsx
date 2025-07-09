@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail } from 'lucide-react';
+import Image from 'next/image';
 
 export default function ContactPage() {
   const [name, setName] = useState('');
@@ -49,50 +50,65 @@ export default function ContactPage() {
             <Phone className="h-8 w-8 text-red-500" />
             <div>
               <h3 className="text-xl font-semibold">Call Us</h3>
-              {/* --- AICI ESTE MODIFICAREA --- */}
               <p className="text-muted-foreground">+40 722 123 456</p>
             </div>
           </div>
         </div>
 
         <h2 className="text-3xl font-bold mb-8">Or Send Us a Message</h2>
-        <form onSubmit={handleSubmit} className="max-w-2xl space-y-8">
-          {/* Restul formularului rămâne neschimbat */}
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="name">Name</Label>
-            <Input 
-              type="text" 
-              id="name" 
-              placeholder="Your Name" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)}
-              required 
+
+        {/* Aici faci layout orizontal cu flex */}
+        <div className="flex flex-col md:flex-row gap-5">
+          {/* FORMULAR STÂNGA */}
+          <form onSubmit={handleSubmit} className="w-full md:w-2/3 space-y-8">
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                type="text"
+                id="name"
+                placeholder="Your Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                id="email"
+                placeholder="your.email@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid w-full gap-1.5">
+              <Label htmlFor="message">Your Message</Label>
+              <Textarea
+                placeholder="Type your message here."
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+                rows={6}
+              />
+            </div>
+            <Button type="submit" size="lg">Send Message</Button>
+          </form>
+
+          {/* IMAGINE DREAPTA */}
+          <div className="w-full md:w-1/3 flex justify-center md:justify-end items-start">
+            <Image
+              src="/mockup-phone-contact.png"
+              alt="Mockup phone displaying contact form"
+              width={300}
+              height={300}
+              priority
+              className="object-contain"
             />
           </div>
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input 
-              type="email" 
-              id="email" 
-              placeholder="your.email@example.com" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
-            />
-          </div>
-          <div className="grid w-full gap-1.5">
-            <Label htmlFor="message">Your Message</Label>
-            <Textarea 
-              placeholder="Type your message here." 
-              id="message" 
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required 
-              rows={6}
-            />
-          </div>
-          <Button type="submit" size="lg">Send Message</Button>
-        </form>
+        </div>
       </div>
     </main>
   );
