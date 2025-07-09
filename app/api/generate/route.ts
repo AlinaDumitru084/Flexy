@@ -1,4 +1,4 @@
-// app/api/generate/route.ts - USING THE CORRECT NAME FOR THE TOP MODEL
+// app/api/generate/route.ts - TARGETED YOUTUBE SEARCH
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,11 +17,10 @@ export async function POST(req: NextRequest) {
       feeling, time 
     } = await req.json();
 
-    // Folosim numele oficial pentru cel mai bun model disponibil: 'gemini-2.5-pro'
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.5-pro",
       generationConfig: {
-        response_mime_type: "application/json",
+        responseMimeType: "application/json",
       }
     });
 
@@ -29,8 +28,10 @@ export async function POST(req: NextRequest) {
       ? equipment.join(', ') 
       : 'Bodyweight only';
 
+    // --- AICI ESTE PROMPTUL MODIFICAT ---
     const prompt = `
-      You are a world-class fitness and nutrition coach. Generate a personalized one-day plan based on the user's data. Adapt the plan based on their feeling and available time.
+      You are a world-class fitness and nutrition coach. Generate a personalized one-day plan based on the user's data.
+      Adapt the plan based on their feeling and available time.
       
       User Data:
       - Age: ${age}
@@ -44,9 +45,10 @@ export async function POST(req: NextRequest) {
       - Today's Feeling: ${feeling}
       - Time available: ${time} minutes
       
-      The JSON output should have two main keys: "workout_plan" and "nutrition_plan".
-      - "workout_plan": an array of objects, each with "exercise" (string), "sets" (string), and "reps" (string).
-      - "nutrition_plan": an array of objects, each with "meal" (string) and "description" (string).
+      The JSON output must have two main keys: "workout_plan" and "nutrition_plan".
+      - "workout_plan": An array of objects. Each object must have "exercise", "sets", "reps", "rest", "explanation", and a "youtube_link".
+      - "youtube_link" MUST be a valid YouTube search URL that finds a demonstration video for the specific exercise ONLY from the "FitnessBlender" channel. The URL format should be: "https://www.youtube.com/results?search_query=fitnessblender+" followed by the exercise name (e.g., "https://www.youtube.com/results?search_query=fitnessblender+dumbbell+squat").
+      - "nutrition_plan": A list of objects, each with "meal" and a very concise "description".
     `;
 
     const result = await model.generateContent(prompt);
