@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const { feeling, time } = await req.json();
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
     const prompt = `
       You are an encouraging fitness coach. A user is starting their day.

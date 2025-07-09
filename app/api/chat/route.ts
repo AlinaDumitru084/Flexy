@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     // <-- 1. We now receive the new feedback information!
     const { userDetails, messageHistory, lastWorkoutFeedback } = await req.json();
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
     // <-- 2. We change the prompt to a "let" so we can add to it.
     let prompt = `

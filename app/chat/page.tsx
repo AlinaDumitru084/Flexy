@@ -1,56 +1,51 @@
-// Code for app/chat/page.tsx
+// app/chat/page.tsx - VERSIUNEA FINALĂ, SINCRONIZATĂ
 
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { ChatInterface } from "@/components/ChatInterface";
-
+import { ChatInterface } from "@/components/ChatInterface"; // Importăm componenta actualizată
 
 export default function ChatPage() {
-  const [initialData, setInitialData] = useState<{ userDetails: any; plan: any } | null>(null);
+  // --- MODIFICAT: State-ul acum salvează doar userDetails, nu un obiect complex. ---
+  const [userDetails, setUserDetails] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
+    // --- MODIFICAT: Citim doar userDetails. ---
     const userDetailsString = localStorage.getItem("userDetails");
-    const initialPlanString = localStorage.getItem("initialPlan");
 
-    if (userDetailsString && initialPlanString) {
-      setInitialData({
-        userDetails: JSON.parse(userDetailsString),
-        plan: JSON.parse(initialPlanString),
-      });
+    if (userDetailsString) {
+      setUserDetails(JSON.parse(userDetailsString));
     }
     setIsLoading(false);
   }, []);
 
-  // --- NEW CODE BLOCK: The recipe for our "Start Over" button ---
-  // This function tells the browser what to do when the button is clicked.
   const handleStartOver = () => {
-    localStorage.clear(); // Erases the browser's short-term memory
-    router.push('/');     // Sends the user back to the welcome screen
+    localStorage.clear();
+    router.push('/');
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading Chat...</div>;
+    return <div className="flex justify-center items-center h-screen bg-background">Loading Chat...</div>;
   }
 
-  if (!initialData) {
+  // --- MODIFICAT: Verificarea se face acum direct pe userDetails. ---
+  if (!userDetails) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen text-center">
-        <p className="mb-4">No plan found. Please generate a plan first.</p>
-        <Link href="/" className="text-blue-500 underline">
-          Go back home
+      <div className="flex flex-col justify-center items-center h-screen text-center bg-background">
+        <p className="mb-4 text-lg">No user details found.</p>
+        <p className="mb-4 text-muted-foreground">Please fill out your details first to start the conversation.</p>
+        <Link href="/details" className="text-blue-500 underline">
+          Go to Details Page
         </Link>
       </div>
     );
   }
 
-  // --- MODIFIED RETURN: We wrap everything in a container and add the button ---
   return (
-    // This div acts as a frame so we can place the button in the corner
     <div className="relative h-screen">
       <button 
         onClick={handleStartOver}
@@ -59,8 +54,8 @@ export default function ChatPage() {
         Start Over
       </button>
       
-      {/* The chat interface stays exactly the same */}
-      <ChatInterface userDetails={initialData.userDetails} initialPlan={initialData.plan} />
+      {/* --- MODIFICAT: Trimitem DOAR userDetails către componentă. --- */}
+      <ChatInterface userDetails={userDetails} />
     </div>
   );
 }
