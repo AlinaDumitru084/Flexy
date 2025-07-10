@@ -1,8 +1,5 @@
 # Flexy - Antrenorul Tău Personal bazat pe AI
 
-![Flexy Hero Image](<img width="1882" height="872" alt="Flexy-HomePage" src="https://github.com/user-attachments/assets/d61ed1fc-d7e1-4ea6-b0d7-b726d5c0a9c7" />
-)  <!-- Opțional: adaugă un screenshot principal aici -->
-
 Acesta este un proiect [Next.js](https://nextjs.org) care demonstrează construirea unei aplicații web full-stack, moderne, ce acționează ca un antrenor de fitness inteligent și conversațional. Misiunea sa este de a elimina "paralizia decizională", generând instantaneu planuri de antrenament personalizate.
 
 Proiectul a fost realizat în cadrul stagiului de practică la Devidevs.
