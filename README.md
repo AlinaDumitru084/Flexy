@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flexy - Antrenorul Tău Personal bazat pe AI
 
-## Getting Started
+![Flexy Hero Image](link_catre_un_screenshot_cu_pagina_principala.png)  <!-- Opțional: adaugă un screenshot principal aici -->
 
-First, run the development server:
+Acesta este un proiect [Next.js](https://nextjs.org) care demonstrează construirea unei aplicații web full-stack, moderne, ce acționează ca un antrenor de fitness inteligent și conversațional. Misiunea sa este de a elimina "paralizia decizională", generând instantaneu planuri de antrenament personalizate.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Proiectul a fost realizat în cadrul stagiului de practică la Devidevs.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Funcționalități Cheie
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+*   **Generare Personalizată de Planuri:** Colectează datele utilizatorului (obiective, experiență, echipament) pentru a crea un plan de antrenament unic.
+*   **Interfață Conversațională (Chatbot):** Permite o interacțiune naturală cu AI-ul pentru a primi planul și a cere ajustări în timp real.
+*   **API Routes în Next.js:** Demonstrează crearea de endpoint-uri backend pentru a comunica cu servicii externe (precum un API de AI).
+*   **Ghid Vizual pentru Exerciții:** Fiecare exercițiu include instrucțiuni și o demonstrație vizuală (GIF) pentru o execuție corectă.
+*   **Urmărirea Progresului:** Un calendar simplu, bazat pe `localStorage`, care marchează zilele de antrenament finalizate.
+*   **Design Modern și Responsiv:** Interfață curată, construită cu **Tailwind CSS**, și un font modern, [Geist](https://vercel.com/font), optimizat automat cu `next/font`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Stack Tehnologic Utilizat
+
+*   **Framework:** [Next.js](https://nextjs.org) (App Router)
+*   **Limbaj:** [TypeScript](https://www.typescriptlang.org/)
+*   **UI:** [React](https://react.dev/)
+*   **Stilizare:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Serviciu AI:** [Google Gemini API](https://ai.google.dev/) (sau altul similar)
+
+## Getting Started: Cum se Rulează Proiectul Local
+
+Pentru a rula acest proiect pe mașina ta locală, urmează pașii de mai jos.
+
+### Prerechizite
+Asigură-te că ai instalată o versiune recentă de [Node.js](https://nodejs.org/en/) (18.x sau mai nouă).
+
+### Pași de Instalare
+
+1.  **Clonează repository-ul:**
+    ```bash
+    git clone https://github.com/AlinaDumitru084/Flexy.git
+    cd Flexy
+    ```
+
+2.  **Instalează dependențele:**
+    ```bash
+    npm install
+    ```
+
+3.  **Configurează variabilele de mediu:**
+    *   Creează un fișier nou în rădăcina proiectului numit `.env.local`.
+    *   Adaugă cheia ta de API pentru serviciul AI în acest fișier.
+    ```
+    GEMINI_API_KEY=CHEIA_TA_SECRETA_DE_API_AICI
+    ```
+
+4.  **Pornește serverul de dezvoltare:**
+    ```bash
+    npm run dev
+    ```
+
+Acum deschide [http://localhost:3000](http://localhost:3000) în browserul tău pentru a vedea aplicația. Poți începe să editezi codul, de exemplu, modificând `app/page.tsx`, iar pagina se va actualiza automat.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+Pentru a învăța mai multe despre tehnologiile folosite, poți consulta următoarele resurse:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Next.js Documentation](https://nextjs.org/docs) - învață despre feature-urile Next.js și API.
+- [Learn Next.js](https://nextjs.org/learn) - un tutorial interactiv.
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - pentru a explora toate clasele utility.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Cea mai simplă metodă de a publica această aplicație este folosind [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) de la creatorii Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Consultă [documentația de deployment pentru Next.js](https://nextjs.org/docs/app/building-your-application/deploying) pentru mai multe detalii.
