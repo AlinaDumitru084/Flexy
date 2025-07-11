@@ -1,86 +1,68 @@
+// app/api/generate/route.ts - USING THE CORRECT NAME FOR THE TOP MODEL
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 
-// IMPORTANT! Do not client-side this, it will expose your API key.
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
+const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+  throw new Error("CRITICAL ERROR: GEMINI_API_KEY is not defined in your .env.local file.");
+}
+
+const genAI = new GoogleGenerativeAI(apiKey);
 
 export async function POST(req: NextRequest) {
-  // This is the main "try" block. It will try to do everything.
-  // If ANY part fails, it will jump to the "catch" block at the end.
   try {
-    // Get the user's data from the request body
-    const { bodyweight, height, sex, age, goal } = await req.json();
+    const { 
+      bodyweight, height, sex, age, goal, experienceLevel, activityLevel, equipment,
+      feeling, time 
+    } = await req.json();
 
-    // For simplicity, we'll use gemini-1.5-flash.
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    // Folosim numele oficial pentru cel mai bun model disponibil: 'gemini-2.5-pro'
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        response_mime_type: "application/json",
+      }
+    });
 
-    // This is the core of our chatbot. We create a detailed prompt
-    // that instructs the AI on its persona, the user's details,
-    // and the desired JSON output format.
+    const equipmentList = Array.isArray(equipment) && equipment.length > 0 
+      ? equipment.join(', ') 
+      : 'Bodyweight only';
+
     const prompt = `
-      You are an expert fitness and nutrition coach.
-      A user has provided their details and is asking for a personalized fitness and nutrition plan.
-      Based on the data below, generate a comprehensive one-day plan.
-
-      User Details:
+      You are a world-class fitness and nutrition coach. Generate a personalized one-day plan based on the user's data. Adapt the plan based on their feeling and available time.
+      
+      User Data:
       - Age: ${age}
       - Sex: ${sex}
       - Height: ${height}
       - Bodyweight: ${bodyweight}
+      - Experience Level: ${experienceLevel}
+      - Daily Activity Level: ${activityLevel}
+      - Available Equipment: ${equipmentList}
       - Primary Goal: ${goal}
-
-      Your response MUST be in a valid JSON format. Do not include any text outside of the JSON structure.
-      The JSON object should have two main keys: "workout_plan" and "nutrition_plan".
-      - "workout_plan" should be an array of objects, where each object has "exercise", "sets", and "reps" keys.
-      - "nutrition_plan" should be an array of objects, where each object has "meal" (e.g., Breakfast, Lunch, Dinner) and "description" keys.
-
-      Example of the required JSON output format:
-      {
-        "workout_plan": [
-          {
-            "exercise": "Squats",
-            "sets": "3",
-            "reps": "10-12"
-          }
-        ],
-        "nutrition_plan": [
-          {
-            "meal": "Breakfast",
-            "description": "Oatmeal with berries and a scoop of protein powder."
-          }
-        ]
-      }
+      - Today's Feeling: ${feeling}
+      - Time available: ${time} minutes
+      
+      The JSON output should have two main keys: "workout_plan" and "nutrition_plan".
+      - "workout_plan": an array of objects, each with "exercise" (string), "sets" (string), and "reps" (string).
+      - "nutrition_plan": an array of objects, each with "meal" (string) and "description" (string).
     `;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
     
-    // --- Start of the JSON parsing logic ---
-    // Find the start and end of the JSON object in the response text
-    const startIndex = text.indexOf('{');
-    const endIndex = text.lastIndexOf('}');
+    console.log("--- GEMINI'S GUARANTEED JSON RESPONSE ---", text);
     
-    if (startIndex !== -1 && endIndex !== -1) {
-      // Extract just the JSON string part
-      const jsonString = text.substring(startIndex, endIndex + 1);
-      
-      // Turn the clean JSON string into a real JavaScript object
-      const parsedJson = JSON.parse(jsonString);
-      
-      // Send the beautiful, clean object back to the website
-      return NextResponse.json(parsedJson);
-    } else {
-      // If we couldn't find a JSON object in the text, we should log it and fail.
-      console.error("No valid JSON object found in Gemini's response. Raw text:", text);
-      throw new Error("Failed to get a valid plan from the AI.");
-    }
+    const parsedJson = JSON.parse(text);
+    return NextResponse.json(parsedJson);
 
-  } catch (error) {
-    // This is the "Plan B". If anything in the "try" block failed,
-    // we land here. We log the error in the terminal and send a
-    // generic error message back to the website.
-    console.error("An error occurred in the generate API route:", error);
-    return NextResponse.json({ error: "An internal server error occurred." }, { status: 500 });
+  } catch (error: any) {
+    console.error("--- AN ERROR OCCURRED IN THE GENERATE API ROUTE ---", error);
+    return NextResponse.json(
+      { error: "An unexpected error occurred. Please check the server logs." },
+      { status: 500 }
+    );
   }
 }
