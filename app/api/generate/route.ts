@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     // Folosim numele oficial pentru cel mai bun model disponibil: 'gemini-2.5-pro'
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.5-pro",
+      model: "gemini-2.5-flash",
       generationConfig: {
         response_mime_type: "application/json",
       }
