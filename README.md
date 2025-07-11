@@ -1,81 +1,75 @@
-Flexy - Your AI-Powered Personal Trainer
-This is a Next.js project that demonstrates how to build a modern, full-stack web application acting as a smart, conversational fitness coach. Its mission is to eliminate “decision paralysis” by instantly generating personalized workout plans.
+# Flexy - Antrenorul Tău Personal bazat pe AI
 
-The project was created during the internship at Devidevs.
+Acesta este un proiect [Next.js](https://nextjs.org) care demonstrează construirea unei aplicații web full-stack, moderne, ce acționează ca un antrenor de fitness inteligent și conversațional. Misiunea sa este de a elimina "paralizia decizională", generând instantaneu planuri de antrenament personalizate.
 
-✨ Key Features
-Personalized Plan Generation: Collects user data (goals, experience, equipment) to create a unique workout plan.
+Proiectul a fost realizat în cadrul stagiului de practică la Devidevs.
 
-Conversational Interface (Chatbot): Allows natural interaction with the AI to receive the plan and request real-time adjustments.
+## ✨ Funcționalități Cheie
 
-API Routes in Next.js: Demonstrates building backend endpoints to communicate with external services (like an AI API).
+*   **Generare Personalizată de Planuri:** Colectează datele utilizatorului (obiective, experiență, echipament) pentru a crea un plan de antrenament unic.
+*   **Interfață Conversațională (Chatbot):** Permite o interacțiune naturală cu AI-ul pentru a primi planul și a cere ajustări în timp real.
+*   **API Routes în Next.js:** Demonstrează crearea de endpoint-uri backend pentru a comunica cu servicii externe (precum un API de AI).
+*   **Ghid Vizual pentru Exerciții:** Fiecare exercițiu include instrucțiuni și o demonstrație vizuală (GIF) pentru o execuție corectă.
+*   **Urmărirea Progresului:** Un calendar simplu, bazat pe localStorage, care marchează zilele de antrenament finalizate.
+*   **Design Modern și Responsiv:** Interfață curată, construită cu **Tailwind CSS**, și un font modern, [Geist](https://vercel.com/font), optimizat automat cu next/font.
 
-Visual Exercise Guide: Each exercise includes instructions and a visual demonstration (GIF) for proper execution.
+## 🛠️ Stack Tehnologic Utilizat
 
-Progress Tracking: A simple, localStorage-based calendar that marks completed workout days.
+*   **Framework:** [Next.js](https://nextjs.org) (App Router)
+*   **Limbaj:** [TypeScript](https://www.typescriptlang.org/)
+*   **UI:** [React](https://react.dev/)
+*   **Stilizare:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Serviciu AI:** [Google Gemini API](https://ai.google.dev/) (sau altul similar)
 
-Modern and Responsive Design: Clean interface built with Tailwind CSS, and a modern font, Geist, automatically optimized with next/font.
+## Getting Started: Cum se Rulează Proiectul Local
 
-🛠️ Tech Stack Used
-Framework: Next.js (App Router)
+Pentru a rula acest proiect pe mașina ta locală, urmează pașii de mai jos.
 
-Language: TypeScript
+### Prerechizite
+Asigură-te că ai instalată o versiune recentă de [Node.js](https://nodejs.org/en/) (18.x sau mai nouă).
 
-UI: React
+### Pași de Instalare
 
-Styling: Tailwind CSS
-
-AI Service: Google Gemini API (or a similar alternative)
-
-Getting Started: How to Run the Project Locally
-To run this project on your local machine, follow the steps below.
-
-Prerequisites
-Make sure you have a recent version of Node.js installed (18.x or newer).
-
-Installation Steps
-Clone the repository:
-
+1.  **Clonează repository-ul:**
+    
 bash
-Copy
-Edit
-git clone https://github.com/AlinaDumitru084/Flexy.git
-cd Flexy
-Install dependencies:
+    git clone https://github.com/AlinaDumitru084/Flexy.git
+    cd Flexy
 
+
+2.  **Instalează dependențele:**
+    
 bash
-Copy
-Edit
-npm install
-Set up environment variables:
+    npm install
 
-Create a new file in the project root named .env.local.
 
-Add your API key for the AI service in this file.
+3.  **Configurează variabilele de mediu:**
+    *   Creează un fișier nou în rădăcina proiectului numit .env.local.
+    *   Adaugă cheia ta de API pentru serviciul AI în acest fișier.
+    
+GEMINI_API_KEY=CHEIA_TA_SECRETA_DE_API_AICI
 
-ini
-Copy
-Edit
-GEMINI_API_KEY=YOUR_SECRET_API_KEY_HERE
-Start the development server:
 
+4.  **Pornește serverul de dezvoltare:**
+    
 bash
-Copy
-Edit
-npm run dev
-Now open http://localhost:3000 in your browser to view the app. You can start editing the code, for example by modifying app/page.tsx, and the page will automatically update.
+    npm run dev
 
-Learn More
-To learn more about the technologies used, check out the following resources:
 
-Next.js Documentation - learn about Next.js features and API.
+Acum deschide [http://localhost:3000](http://localhost:3000) în browserul tău pentru a vedea aplicația. Poți începe să editezi codul, de exemplu, modificând app/page.tsx, iar pagina se va actualiza automat.
 
-Learn Next.js - an interactive tutorial.
+## Learn More
 
-Tailwind CSS Documentation - explore all utility classes.
+Pentru a învăța mai multe despre tehnologiile folosite, poți consulta următoarele resurse:
 
-Deploy on Vercel
-The easiest way to deploy this application is by using the Vercel Platform from the creators of Next.js.
+- [Next.js Documentation](https://nextjs.org/docs) - învață despre feature-urile Next.js și API.
+- [Learn Next.js](https://nextjs.org/learn) - un tutorial interactiv.
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - pentru a explora toate clasele utility.
 
-Check out the Next.js deployment documentation for more details.
+## Deploy on Vercel
+
+Cea mai simplă metodă de a publica această aplicație este folosind [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) de la creatorii Next.js.
+
+Consultă [documentația de deployment pentru Next.js](https://nextjs.org/docs/app/building-your-application/deploying) pentru mai multe detalii.
+
 
