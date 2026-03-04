@@ -25,21 +25,21 @@ export default function ProgressPage() {
   // The style for the colored-in days
   const completedDayStyle = {
     backgroundColor: '#22c55e', // A nice, motivating green color
-    color: 'white',
+    color: 'black',
     borderRadius: '50%',
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Your Progress</h1>
+      <div className="bg-white text-gray-900 p-6 rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold mb-6 text-center text-black-900">Your Progress</h1>
         <DayPicker
           mode="multiple" // Allows selecting multiple days
           selected={completedDays}
           modifiers={{ completed: completedDays }} // This tells the calendar which days to style
           modifiersStyles={{ completed: completedDayStyle }} // This applies our green style
         />
-        <p className="mt-4 text-center text-gray-600">
+        <p className="mt-4 text-center text-black-800">
           Each green circle is a completed workout. Don't break the chain!
         </p>
       </div>
