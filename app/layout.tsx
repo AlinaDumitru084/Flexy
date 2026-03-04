@@ -1,9 +1,9 @@
-// This is the new, correct code for /app/layout.tsx
+
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "next-themes"; // <-- 1. Add this new line to import the power box
+import { ThemeProvider } from "next-themes"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,12 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <-- 2. Add this little instruction to the <html> tag
+    
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <-- 3. Wrap your {children} with these lines to turn on the power --> */}
+        {}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

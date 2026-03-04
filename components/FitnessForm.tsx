@@ -1,10 +1,8 @@
-// components/FitnessForm.tsx - USING A MORE ROBUST NAVIGATION METHOD
+
 
 'use client';
 
 import { useState } from 'react';
-// Am șters useRouter, deoarece folosim o metodă directă de navigare
-// import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +25,7 @@ const equipmentOptions = [
 ];
 
 export default function FitnessForm() {
-  // const router = useRouter(); // Nu mai avem nevoie de această linie
+  
 
   const [age, setAge] = useState('');
   const [sex, setSex] = useState('');
@@ -53,16 +51,14 @@ export default function FitnessForm() {
 
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
 
-    console.log('User details saved. Navigating to /chat...'); // Mesaj de verificare
+    console.log('User details saved. Navigating to /chat...'); 
 
-    // --- AICI ESTE MODIFICAREA CRUCIALĂ ---
-    // Folosim metoda directă a browser-ului pentru a naviga.
     window.location.href = '/chat';
   };
 
   return (
     <form onSubmit={handleSaveAndNavigate} className="w-full space-y-12">
-      {/* Restul formularului rămâne identic */}
+      {}
       <div className="p-6 border rounded-lg shadow-sm">
         <h2 className="text-2xl font-semibold mb-6">1. Your Personal Details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

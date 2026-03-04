@@ -1,13 +1,11 @@
-// components/FeaturesSection.tsx
 
-// A helper component for each feature item
 function Feature({ title, description }: { title: string; description: string }) {
   return (
-    // --- MODIFIED: Padding is now smaller (p-4) ---
+    
     <div className="border border-gray-800 p-4 rounded-lg">
-      {/* --- MODIFIED: Title is now smaller (text-lg) --- */}
+      {}
       <h3 className="text-lg font-bold mb-2">{title}</h3>
-      {/* --- MODIFIED: Description is now smaller (text-sm) --- */}
+      {}
       <p className="text-sm text-gray-400">{description}</p>
     </div>
   );

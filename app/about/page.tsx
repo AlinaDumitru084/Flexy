@@ -9,14 +9,14 @@ export default function AboutPage() {
     <main className="min-h-screen bg-background text-foreground">
       <Navbar />
 
-      {/* Acest container va centra blocurile principale (titlul și div-ul cu text) */}
+      {}
       <div className="container mx-auto px-6 py-16 flex flex-col items-center">
         
-        {/* Titlul rămâne centrat */}
+        {}
         <h1 className="text-5xl font-extrabold tracking-tight mb-12 text-center">🏋️‍♀️ About Flexy</h1>
 
-        {/* --- CONTAINER DE TEXT MODIFICAT --- */}
-        {/* Am șters clasa 'text-center' de aici. Textul va reveni la alinierea implicită (stânga). */}
+        {}
+        {}
         <div className="space-y-12 text-lg text-muted-foreground max-w-5xl">
           
           <section>
@@ -58,7 +58,7 @@ export default function AboutPage() {
 
         </div>
 
-        {/* Acest buton este centrat datorită containerului principal */}
+        {}
         <div className="mt-16">
           <Link href="/">
             <Button variant="outline">Back to Home</Button>

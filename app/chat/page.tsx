@@ -1,20 +1,20 @@
-// app/chat/page.tsx - VERSIUNEA FINALĂ, SINCRONIZATĂ
+
 
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { ChatInterface } from "@/components/ChatInterface"; // Importăm componenta actualizată
+import { ChatInterface } from "@/components/ChatInterface"; 
 
 export default function ChatPage() {
-  // --- MODIFICAT: State-ul acum salvează doar userDetails, nu un obiect complex. ---
+  
   const [userDetails, setUserDetails] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // --- MODIFICAT: Citim doar userDetails. ---
+   
     const userDetailsString = localStorage.getItem("userDetails");
 
     if (userDetailsString) {
@@ -32,7 +32,7 @@ export default function ChatPage() {
     return <div className="flex justify-center items-center h-screen bg-background">Loading Chat...</div>;
   }
 
-  // --- MODIFICAT: Verificarea se face acum direct pe userDetails. ---
+  
   if (!userDetails) {
     return (
       <div className="flex flex-col justify-center items-center h-screen text-center bg-background">
@@ -54,7 +54,7 @@ export default function ChatPage() {
         Start Over
       </button>
       
-      {/* --- MODIFICAT: Trimitem DOAR userDetails către componentă. --- */}
+      {}
       <ChatInterface userDetails={userDetails} />
     </div>
   );

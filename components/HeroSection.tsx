@@ -1,4 +1,3 @@
-// components/HeroSection.tsx
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -6,10 +5,10 @@ import { Button } from '@/components/ui/button';
 
 export function HeroSection() {
   return (
-    // SCHIMBAT: Am înlocuit flexbox-ul centrat cu un grid cu 2 coloane
+    
     <section className="container mx-auto mt-16 grid grid-cols-1 md:grid-cols-2 items-center gap-8">
       
-      {/* COLOANA 1: Textul (aliniat la stânga) */}
+      {}
       <div className="flex flex-col space-y-5">
         <h1 className="text-8xl font-extrabold tracking-tighter">
           Flexy
@@ -34,7 +33,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* COLOANA 2: Imaginea (centrată în coloana ei) */}
+      {}
       <div className="flex items-center justify-center">
         <Image
           src="/bodymodel.png"

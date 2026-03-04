@@ -7,12 +7,12 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export async function POST(req: NextRequest) {
   try {
-    // <-- 1. We now receive the new feedback information!
+   
     const { userDetails, messageHistory, lastWorkoutFeedback } = await req.json();
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    // <-- 2. We change the prompt to a "let" so we can add to it.
+    
     let prompt = `
       You are "Flexy," a friendly, expert-level AI fitness and nutrition coach.
       Your advice should be comprehensive, safe, and based on widely accepted fitness principles.
@@ -25,8 +25,7 @@ export async function POST(req: NextRequest) {
       - Primary Goal: ${userDetails.goal}
     `;
 
-    // <-- 3. This is our new, smarter rule!
-    // If feedback exists, we add a special new section to the AI's instructions.
+    
     if (lastWorkoutFeedback) {
       prompt += `
 
@@ -36,7 +35,7 @@ export async function POST(req: NextRequest) {
       `;
     }
 
-    // We add the rest of the instructions like before.
+    
     prompt += `
 
       **Conversation History:**

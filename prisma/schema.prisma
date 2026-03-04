@@ -1,4 +1,4 @@
-// This is the code for prisma/schema.prisma
+
 
 generator client {
   provider = "prisma-client-js"
@@ -17,14 +17,14 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  conversations Conversation[] // A user can have many conversations
+  conversations Conversation[] 
 }
 
 model Conversation {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages  Json     // We'll store the whole chat history here as JSON
+  messages  Json     
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

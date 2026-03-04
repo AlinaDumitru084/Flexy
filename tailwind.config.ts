@@ -1,8 +1,8 @@
-// Paste this code into the new tailwind.config.ts file
+
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"], // We are including our Night Mode rule here!
+  darkMode: ["class"], 
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -18,7 +18,7 @@ module.exports = {
       },
     },
     extend: {
-      // You can add custom colors, fonts, etc. here later
+      
     },
   },
   plugins: [require("tailwindcss-animate")],

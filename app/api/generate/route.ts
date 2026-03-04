@@ -1,4 +1,4 @@
-// app/api/generate/route.ts - USING THE CORRECT NAME FOR THE TOP MODEL
+
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       feeling, time 
     } = await req.json();
 
-    // Folosim numele oficial pentru cel mai bun model disponibil: 'gemini-2.5-pro'
+    
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.5-flash",
       generationConfig: {
