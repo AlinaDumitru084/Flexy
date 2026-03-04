@@ -24,7 +24,7 @@ export function HeroSection() {
               size="lg"
               className="text-lg font-bold text-white bg-red-400 hover:bg-red-500 hover:scale-105 transition-transform"
             >
-              Let's have a conversation
+              Let&apos;s have a conversation
             </Button>
           </Link>
 

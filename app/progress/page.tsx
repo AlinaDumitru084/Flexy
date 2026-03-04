@@ -40,7 +40,7 @@ export default function ProgressPage() {
           modifiersStyles={{ completed: completedDayStyle }} 
         />
         <p className="mt-4 text-center text-black-800">
-          Each green circle is a completed workout. Don't break the chain!
+          Each green circle is a completed workout. Don&apos;t break the chain!
         </p>
       </div>
       <Link href="/chat" passHref className="mt-8">

@@ -14,8 +14,8 @@ interface Message {
   text: string;
 }
 
-export function ChatInterface({ userDetails }: { userDetails: any }) {
-  const router = useRouter();
+export function ChatInterface({ userDetails }: { userDetails: Record<string, unknown> }) {
+  
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -81,13 +81,13 @@ export function ChatInterface({ userDetails }: { userDetails: any }) {
 
       const workoutText = plan.workout_plan
         .map(
-          (item: any) =>
+          (item: { exercise:string, sets:string, reps:string }) =>
             `- **${item.exercise}**: ${item.sets} sets of ${item.reps} reps`
         )
         .join("\n");
 
       const nutritionText = plan.nutrition_plan
-        .map((item: any) => `- **${item.meal}**: ${item.description}`)
+        .map((item: { meal:string, description:string }) => `- **${item.meal}**: ${item.description}`)
         .join("\n");
 
       const finalPlanMessage = `
@@ -108,7 +108,7 @@ Let me know if you have any questions about it!
 
       const today = new Date().toISOString().split("T")[0];
 
-      let savedDays = JSON.parse(
+      const savedDays = JSON.parse(
         localStorage.getItem("completedWorkoutDays") || "[]"
       );
 
@@ -117,7 +117,7 @@ Let me know if you have any questions about it!
       }
 
       localStorage.setItem("completedWorkoutDays", JSON.stringify(savedDays));
-    } catch (error) {
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
         {
