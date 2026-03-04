@@ -1,39 +1,47 @@
-
-import Link from 'next/link';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
-    
     <section className="container mx-auto mt-16 grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-      
-      {}
       <div className="flex flex-col space-y-5">
-        <h1 className="text-8xl font-extrabold tracking-tighter">
-          Flexy
-        </h1>
-        
+        <h1 className="text-8xl font-extrabold tracking-tighter">Flexy</h1>
+
         <p className="text-xl text-muted-foreground mt-2">
           Flex your limits.
         </p>
 
         <p className="text-lg text-muted-foreground mt-8">
-          Feeling lost at the gym? Flexy is your friendly guide to fitness. 
-          We create simple, effective workout plans that grow with you. 
+          Feeling lost at the gym? Flexy is your friendly guide to fitness.
+          We create simple, effective workout plans that grow with you.
           Get step-by-step guidance and build your confidence, one workout at a time.
         </p>
 
-        <div className="pt-4">
+        <div className="pt-4 flex gap-4">
           <Link href="/details">
-            <Button size="lg" className="text-lg font-bold text-white bg-gradient-to-r bg-red-400 hover:bg-red-500 hover:scale-105 transition-transform">
+            <Button
+              size="lg"
+              className="text-lg font-bold text-white bg-red-400 hover:bg-red-500 hover:scale-105 transition-transform"
+            >
               Let's have a conversation
+            </Button>
+          </Link>
+
+          <Link href="/signup">
+            <Button size="lg" variant="outline">
+              Sign Up
+            </Button>
+          </Link>
+
+          <Link href="/login">
+            <Button size="lg" variant="outline">
+              Sign In
             </Button>
           </Link>
         </div>
       </div>
 
-      {}
       <div className="flex items-center justify-center">
         <Image
           src="/bodymodel.png"
@@ -44,7 +52,6 @@ export function HeroSection() {
           className="object-contain"
         />
       </div>
-
     </section>
   );
 }
