@@ -1,20 +1,20 @@
 # Flexy - AI Personal Trainer
 
-Flexy is a Next.js web app built as part of an internship at Devidevs. The goal was to eliminate "decision paralysis" around workouts — instead of figuring out what to do at the gym, you tell the app your goals and it builds a personalized plan for you instantly.
+Flexy is a Next.js web app built as part of an internship at Devidevs. The goal was to eliminate "decision paralysis" around workouts - instead of figuring out what to do at the gym, you tell the app your goals and it builds a personalized plan for you instantly.
 
 ## Features
 
-Personalized workout plans — collects your goals, experience level and available equipment to generate a plan tailored to you.
+Personalized workout plans - collects your goals, experience level and available equipment to generate a plan tailored to you.
 
-Chat interface — interact naturally with the AI to receive your plan and request adjustments in real time.
+Chat interface - interact naturally with the AI to receive your plan and request adjustments in real time.
 
-Next.js API Routes — backend endpoints that communicate with external AI services, keeping API keys server-side.
+Next.js API Routes - backend endpoints that communicate with external AI services, keeping API keys server-side.
 
-Exercise guides — each exercise includes instructions and a GIF demonstration for correct execution.
+Exercise guides - each exercise includes instructions and a GIF demonstration for correct execution.
 
-Progress tracking — a simple calendar based on localStorage that marks completed training days.
+Progress tracking - a simple calendar based on localStorage that marks completed training days.
 
-Responsive UI — clean interface built with Tailwind CSS and the Geist font, auto-optimized with next/font.
+Responsive UI - clean interface built with Tailwind CSS and the Geist font, auto-optimized with next/font.
 
 ## Tech Stack
 
